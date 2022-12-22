@@ -10,12 +10,14 @@ module "eks" {
   cluster_endpoint_public_access = true
 
   cluster_addons = {
-    kube-proxy = {}
-    vpc-cni    = {}
     coredns = {
-      configuration_values = jsonencode({
-        computeType = "Fargate"
-      })
+      most_recent = true
+    }
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
+      most_recent = true
     }
   }
 
@@ -23,43 +25,28 @@ module "eks" {
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.intra_subnets
 
-  create_cluster_security_group = false
-  create_node_security_group    = false
-
-  fargate_profile_defaults = {
-    iam_role_additional_policies = {
-      additional = aws_iam_policy.additional.arn
-    }
-  }
-
-  fargate_profiles = {
+  eks_managed_node_groups = {
     main = {
-      name = "main"
-      selectors = [
-        {
-          namespace = "flux-system"
-        }
-      ]
+      name        = "main"
+      description = "EKS managed node group for management workloads"
+      # Use a single subnet for costs reasons
+      subnet_ids = [element(module.vpc.private_subnets, 0)]
 
-      subnet_ids = [module.vpc.private_subnets[1]]
+      min_size     = 1
+      max_size     = 3
+      desired_size = 1
 
-      tags = {
-        Application = "Flux"
+      # Bottlerocket
+      use_custom_launch_template = false
+      ami_type                   = "BOTTLEROCKET_x86_64"
+      platform                   = "bottlerocket"
+
+      capacity_type        = "SPOT"
+      force_update_version = true
+      instance_types       = ["m6i.large", "m5.large"]
+      labels = {
+        Workload = "management"
       }
-
-      timeouts = {
-        create = "20m"
-        delete = "20m"
-      }
-    }
-
-    kube_system = {
-      name = "kube-system"
-      selectors = [
-        {
-          namespace = "kube-system"
-        }
-      ]
     }
   }
 
