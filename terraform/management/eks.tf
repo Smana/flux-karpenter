@@ -5,8 +5,8 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.4"
 
-  cluster_name                   = local.cluster_name
-  cluster_version                = local.cluster_version
+  cluster_name                   = var.cluster_name
+  cluster_version                = var.cluster_version
   cluster_endpoint_public_access = true
 
   cluster_addons = {
@@ -50,5 +50,5 @@ module "eks" {
     }
   }
 
-  tags = local.tags
+  tags = var.tags
 }

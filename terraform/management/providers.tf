@@ -1,5 +1,5 @@
 provider "aws" {
-  region = local.region
+  region = var.region
 }
 
 provider "flux" {}
@@ -18,7 +18,7 @@ provider "kubectl" {
       "eks",
       "get-token",
       "--cluster-name",
-      local.cluster_name
+      var.cluster_name
     ]
   }
 }
@@ -34,7 +34,7 @@ provider "kubernetes" {
       "eks",
       "get-token",
       "--cluster-name",
-      local.cluster_name
+      var.cluster_name
     ]
   }
 }

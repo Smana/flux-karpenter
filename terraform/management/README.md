@@ -62,10 +62,15 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_branch"></a> [branch](#input\_branch) | branch name | `string` | `"main"` | no |
+| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the EKS cluster to be created | `string` | n/a | yes |
+| <a name="input_cluster_version"></a> [cluster\_version](#input\_cluster\_version) | k8s cluster version | `string` | `"1.24"` | no |
+| <a name="input_env"></a> [env](#input\_env) | The environment of the EKS cluster | `string` | n/a | yes |
 | <a name="input_github_owner"></a> [github\_owner](#input\_github\_owner) | github owner | `string` | n/a | yes |
 | <a name="input_github_token"></a> [github\_token](#input\_github\_token) | github token | `string` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | `"eu-west-3"` | no |
 | <a name="input_repository_name"></a> [repository\_name](#input\_repository\_name) | github repository name | `string` | `"test-provider"` | no |
-| <a name="input_target_path"></a> [target\_path](#input\_target\_path) | flux sync target path | `string` | `"staging-cluster"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources | `map(string)` | `{}` | no |
+| <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | The IPv4 CIDR block for the VPC | `string` | `"10.0.0.0/16"` | no |
 
 ## Outputs
 

@@ -1,22 +1,6 @@
-# SSH
-locals {
-  known_hosts = "github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg="
-}
-
 resource "tls_private_key" "main" {
   algorithm   = "ECDSA"
   ecdsa_curve = "P256"
-}
-
-# Flux
-data "flux_install" "main" {
-  target_path = var.target_path
-}
-
-data "flux_sync" "main" {
-  target_path = var.target_path
-  url         = "ssh://git@github.com/${var.github_owner}/${var.repository_name}.git"
-  branch      = var.branch
 }
 
 # Kubernetes
@@ -30,27 +14,6 @@ resource "kubernetes_namespace" "flux_system" {
       metadata[0].labels,
     ]
   }
-}
-
-data "kubectl_file_documents" "install" {
-  content = data.flux_install.main.content
-}
-
-data "kubectl_file_documents" "sync" {
-  content = data.flux_sync.main.content
-}
-
-locals {
-  install = [for v in data.kubectl_file_documents.install.documents : {
-    data : yamldecode(v)
-    content : v
-    }
-  ]
-  sync = [for v in data.kubectl_file_documents.sync.documents : {
-    data : yamldecode(v)
-    content : v
-    }
-  ]
 }
 
 resource "kubectl_manifest" "install" {
@@ -76,16 +39,9 @@ resource "kubernetes_secret" "main" {
   data = {
     identity       = tls_private_key.main.private_key_pem
     "identity.pub" = tls_private_key.main.public_key_pem
-    known_hosts    = local.known_hosts
+    known_hosts    = local.github_known_hosts
   }
 }
-
-# GitHub
-# resource "github_repository" "main" {
-#   name       = var.repository_name
-#   visibility = var.repository_visibility
-#   auto_init  = true
-# }
 
 resource "github_branch_default" "main" {
   repository = var.repository_name
@@ -93,7 +49,7 @@ resource "github_branch_default" "main" {
 }
 
 resource "github_repository_deploy_key" "main" {
-  title      = local.cluster_name
+  title      = var.cluster_name
   repository = var.repository_name
   key        = tls_private_key.main.public_key_openssh
   read_only  = true
