@@ -1,10 +1,35 @@
 # Management cluster
 
+
 * Create a VPC (intra, private and public subnets)
 * Create a management EKS cluster in a single zone
 * Use SPOT instances
 * Use bottlerocket AMI
 * Install and configure Flux
+
+## How to apply this?
+
+1. Edit the file `backend.tf` and put your own S3 bucket name.
+2. Create a file that contains your own variables. Here's an example:
+
+`variables.tfvars`
+
+```hcl
+env          = "mgmt"
+cluster_name = "mgmt-vital-bird" # Generated with petname
+
+github_owner    = "Smana"
+github_token    = <REDACTED>
+repository_name = "flux-karpenter"
+
+tags = {
+  GithubRepo = "flux-karpenter"
+  GithubOrg  = "Smana"
+}
+```
+
+3. Apply with `terraform apply -var-file variables.tfvars`
+
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
