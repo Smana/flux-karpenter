@@ -21,6 +21,15 @@ module "eks" {
     }
   }
 
+  manage_aws_auth_configmap = true
+  aws_auth_users = [
+    {
+      userarn  = "arn:aws:iam::${data.aws_caller_identity.this.account_id}:user/smana"
+      username = "smana"
+      groups   = ["system:masters"]
+    },
+  ]
+
   vpc_id                   = module.vpc.vpc_id
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.intra_subnets

@@ -37,6 +37,7 @@ variable "github_owner" {
 variable "github_token" {
   type        = string
   description = "github token"
+  sensitive   = true
 }
 
 variable "repository_name" {
