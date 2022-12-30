@@ -7,4 +7,4 @@ spec:
     runner:
       serviceAccount:
         annotations:
-          eks.amazonaws.com/role-arn: "arn:aws:iam::396740644681:role/tfcontroller_mgmt-vital-bird"
+          eks.amazonaws.com/role-arn: "arn:aws:iam::396740644681:role/tfcontroller_mgmt-trusty-bear"
