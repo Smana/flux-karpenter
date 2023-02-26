@@ -42,7 +42,6 @@ variable "github_token" {
 
 variable "repository_name" {
   type        = string
-  default     = "test-provider"
   description = "github repository name"
 }
 
