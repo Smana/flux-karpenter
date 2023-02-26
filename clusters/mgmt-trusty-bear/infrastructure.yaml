@@ -7,7 +7,7 @@ metadata:
 spec:
   prune: true
   interval: 4m0s
-  path: ./infrastructure/mgmt-vital-bird
+  path: ./infrastructure/mgmt-trusty-bear
   sourceRef:
     kind: GitRepository
     name: flux-system

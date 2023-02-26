@@ -16,7 +16,7 @@
 
 ```hcl
 env          = "mgmt"
-cluster_name = "mgmt-vital-bird" # Generated with petname
+cluster_name = "mgmt-trusty-bear" # Generated with petname
 
 github_owner    = "Smana"
 github_token    = <REDACTED>
