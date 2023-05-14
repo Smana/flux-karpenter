@@ -1,5 +1,5 @@
 terraform {
-  required_version = "~> 1.3"
+  required_version = "~> 1.4"
 
   required_providers {
     aws = {
@@ -20,7 +20,7 @@ terraform {
     }
     flux = {
       source  = "fluxcd/flux"
-      version = ">= 0.22.0"
+      version = "1.0.0-rc.3"
     }
     tls = {
       source  = "hashicorp/tls"
