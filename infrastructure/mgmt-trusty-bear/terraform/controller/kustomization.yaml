@@ -1,13 +1,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-bases:
-  - ../../base/sealed-secrets
+
+resources:
+  - ../../../base/tf-controller
 
 patches:
   - path: helmrelease.yaml
     target:
       group: helm.toolkit.fluxcd.io
       kind: HelmRelease
-      name: sealed-secrets
-      namespace: kube-system
+      name: tf-controller
+      namespace: flux-system
       version: v2beta1
