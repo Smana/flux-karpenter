@@ -30,4 +30,4 @@ spec:
       name: github-credentials
   runnerPodTemplate:
     spec:
-      image: smana/tf-runner:latest
+      image: smana/tf-runner:v0.15.0-rc.1
